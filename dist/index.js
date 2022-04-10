@@ -16353,9 +16353,9 @@ async function run() {
       const formHeaders = formData.getHeaders();
 
       core.info('Analyzing code...');
-      const response = await axios.post(`${serverUrl}/${apiVersion}/action`, formData, {
+      const response = await axios.post(`${serverUrl}/${apiVersion}/action`, formData, {timeout: 600000}, {
         headers: {...formHeaders}
-      }, {timeout: 600000});
+      });
       if (response.data.report) {
         fs.writeFileSync(saveFilename, JSON.stringify(response.data.report), function (err) {
           if (err) {
