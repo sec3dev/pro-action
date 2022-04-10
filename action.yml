@@ -1,0 +1,9 @@
+name: 'Soteria Pro'
+description: 'This action conducts security auditing on Solana smart contracts using Soteria Premium tool.'
+inputs:
+  soteria-token:
+    description: 'The token (same as the invitation code) that Soteria has provided to the user'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
