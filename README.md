@@ -35,10 +35,10 @@ on:
   push:
     branches: main
   pull_request:
-    branches: main
+    branches: "*"
 jobs:
   audit:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check-out the repository
         uses: actions/checkout@v2
