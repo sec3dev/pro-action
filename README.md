@@ -48,8 +48,36 @@ jobs:
         with:
           soteria-token: ${{ secrets.SOTERIA_TOKEN }}
 ```
+## Code scanning alerts integration
+To integration with [Code scanning alerts in Github](https://docs.github.com/en/enterprise-server@3.4/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/setting-up-code-scanning-for-a-repository), create an Action as follows:
+```
+name: Soteria Pro Audit
+     # update to match your branch names and requirements
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: "*"
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check-out the repository
+        uses: actions/checkout@v2
+      - name: Soteria Pro Audit
+        continue-on-error: true    # set to true if you don't want to fail jobs
+        uses: soteria-bc/pro-action-pilot@v1
+        with:
+          soteria-token: ${{ secrets.SOTERIA_TOKEN }}
+      - name: Upload Sarif Report
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: soteria-report.sarif
+```
 ## Managing false positives
 The tool may identify potential issues that you accept as they are to e.g. save compute cycles, or genuine false positives. Ignores can be configured by adding the below annotation to the line above the line you are wanting to ignore:
 ```
 //#[soteria(ignore)]
 ```
+
