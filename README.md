@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Soteria Pro Audit
         continue-on-error: false    # set to true if you don't want to fail jobs
-        uses: soteria-bc/action-pilot-test@v1
+        uses: soteria-bc/pro-action-pilot@v1
         with:
           soteria-token: ${{ secrets.SOTERIA_TOKEN }}
 ```

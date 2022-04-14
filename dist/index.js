@@ -16353,7 +16353,7 @@ async function run() {
       formData.append('code', fs.createReadStream('/tmp/code.tgz'), 'name');
       const formHeaders = formData.getHeaders();
 
-      core.info('Analyzing code...');
+      core.info('Auditing in progress...');
       const response = await axios.post(`${serverUrl}/${apiVersion}/action`, formData, {
         headers: {...formHeaders}
       });
@@ -16365,16 +16365,16 @@ async function run() {
           }
         });
 
-        core.info('Analysis completed!');
+        core.info('Audit completed!');
         if (response.data.numTotalIssues === 0) {
           core.info(`All tests are passed!`);
         } else {
-          core.setFailed(`Total number of warnings: ${response.data.numTotalIssues}`)
+          core.setFailed(`Total number of (potential) security issues: ${response.data.numTotalIssues}`)
         }
-        core.info(`The report is saved in the workspace as "${saveFilename}"`);
+        core.info(`The audit report is saved in the workspace as "${saveFilename}"`);
         core.info(`To view and download the report on Soteria web app, visit: ${response.data.reportLink}`);
       } else {
-        core.setFailed('Failed to get report!');
+        core.setFailed('Failed to get report');
       }
     }
     catch (error) {
