@@ -22,7 +22,7 @@ Warning: **DO NOT** explicitly include your token in the workflow.
 
 **Optional.** The path to the program to be tested.
 
-It omitted, the test will run against all the programs in the repository.
+If omitted, the test will run against all the programs in the repository.
 
 ## Output
 
