@@ -28,7 +28,6 @@ It omitted, the test will run against all the programs in the repository.
 
 The output of the action is a file in the format of [Static Analysis Results Interchange Format (SARIF) Version 2.1.0](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html). It can be accessed by:
 
-<<<<<<< HEAD
 - A download link will be provided in the action log.
 
 - A file named `soteria-report.sarif` will be generated in the workspace.
@@ -42,41 +41,50 @@ on:
   push:
     branches: main
   pull_request:
-    branches: main
+    branches: "*"
 jobs:
   audit:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check-out the repository
         uses: actions/checkout@v2
       - name: Soteria Pro Audit
         continue-on-error: false    # set to true if you don't want to fail jobs
-        uses: soteria-bc/action-pilot-test@v1
+        uses: soteria-bc/pro-action-pilot@v1
         with:
           soteria-token: ${{ secrets.SOTERIA_TOKEN }}
+          path: programs/your_program
+```
+## Code scanning alerts integration
+To integration with [Code scanning alerts in Github](https://docs.github.com/en/enterprise-server@3.4/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/setting-up-code-scanning-for-a-repository), create an Action as follows:
+```
+name: Soteria Pro Audit
+     # update to match your branch names and requirements
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: "*"
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check-out the repository
+        uses: actions/checkout@v2
+      - name: Soteria Pro Audit
+        continue-on-error: true    # set to true if you don't want to fail jobs
+        uses: soteria-bc/pro-action-pilot@v1
+        with:
+          soteria-token: ${{ secrets.SOTERIA_TOKEN }}
+          path: programs/your_program
+      - name: Upload Sarif Report
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: soteria-report.sarif
 ```
 ## Managing false positives
 The tool may identify potential issues that you accept as they are to e.g. save compute cycles, or genuine false positives. Ignores can be configured by adding the below annotation to the line above the line you are wanting to ignore:
 ```
 //#[soteria(ignore)]
 ```
-=======
-### Direct download
-A download link will be provided in the action log.
-
-### File in the workspace
-A file named `soteria-report.sarif` will be generated in the workspace.
-
-## Example usage
-    # Checkout the source code into the github workspace
-    - uses: actions/checkout@v2
-    # Call the action for Soteria tool.
-    - uses: soteria-bc/action-pilot-test@v1
-      with:
-        path: programs/one_program
-        soteria-token: ${{ secrets.SOTERIA_TOKEN }}
-    # Optional. Upload the report to github code scanning
-    - uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: soteria-report.sarif
->>>>>>> v1
