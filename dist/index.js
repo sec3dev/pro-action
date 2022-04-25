@@ -16369,7 +16369,7 @@ async function run() {
       if (response.data.report) {
         fs.writeFileSync(saveFilename, JSON.stringify(response.data.report), function (err) {
           if (err) {
-            core.setFailed(error.message);
+            core.setFailed(err.message);
             throw error;
           }
         });
