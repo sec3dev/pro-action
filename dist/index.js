@@ -16339,14 +16339,12 @@ const saveFilename = 'soteria-report.sarif';
 
 async function run() {
     try {
-      // Gather information
       const password = core.getInput('soteria-token', {required: true});
       const path = core.getInput('path', {required: false}) || "";
       const commit = github.context.sha;
-      const repoName = github.context.payload.repository.name;
+      const repoName = github.context.payload.repository? github.context.payload.repository.name : "Untitled Task";
       const taskName = repoName + ' ' + commit;
 
-      // Create directories and files for packaging
       fs.mkdirSync(`/tmp/${repoName}/${path}`, { recursive: true })
       execSync(`
         CODE_DIR=$(pwd)
@@ -16355,7 +16353,6 @@ async function run() {
         tar -czf code.tgz ${repoName}
       `)
 
-      // Create multipart form data
       const formData = new FormData();
       formData.append('taskName', taskName);
       formData.append('description', '');
@@ -16364,14 +16361,12 @@ async function run() {
       formData.append('code', fs.createReadStream('/tmp/code.tgz'), 'name');
       const formHeaders = formData.getHeaders();
 
-      // Send data to API
       core.info('Analyzing code...');
       const response = await axios.post(`${apiUrl}/${apiVersion}/action`, formData, {
-        headers: {...formHeaders}
+        headers: {...formHeaders},
+        validateStatus: function() {return true},
       });
-
       if (response.data.report) {
-        // Write SARIF report
         fs.writeFileSync(saveFilename, JSON.stringify(response.data.report), function (err) {
           if (err) {
             core.setFailed(error.message);
@@ -16379,7 +16374,6 @@ async function run() {
           }
         });
 
-        // Output information
         core.info('Analysis completed!');
         if (response.data.numTotalIssues === 0) {
           core.info(`All tests are passed!`);
@@ -16388,13 +16382,14 @@ async function run() {
         }
         core.info(`The report is saved in the workspace as "${saveFilename}"`);
         core.info(`To view and download the report on Soteria web app, visit: ${response.data.reportLink}`);
+      } else if (response.data.message) {
+        core.setFailed('Failed to get report: ' + response.data.message);
       } else {
-        core.setFailed('Failed to get report!');
+        core.setFailed('Failed to get report.');
       }
     }
     catch (error) {
       core.setFailed(error.message);
-      throw error;
     }
 }
 
