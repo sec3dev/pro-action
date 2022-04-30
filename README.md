@@ -98,3 +98,12 @@ Ignore missing unsafe transfer destination check only:
 ```
 //#[soteria(ignore_destination)]
 ```
+These annotations can also be combined:
+```
+//#[soteria(ignore_signer,ignore_destination)]
+```
+Or
+```
+//#[soteria(ignore_signer)]
+//#[soteria(ignore_destination)]
+```
