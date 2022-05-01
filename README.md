@@ -88,3 +88,22 @@ The tool may identify potential issues that you accept as they are to e.g. save 
 ```
 //#[soteria(ignore)]
 ```
+
+### Finer-grained annotations
+Ignore missing signer check only:
+```
+//#[soteria(ignore_signer)]
+```
+Ignore missing unsafe transfer destination check only:
+```
+//#[soteria(ignore_destination)]
+```
+These annotations can also be combined:
+```
+//#[soteria(ignore_signer,ignore_destination)]
+```
+Or
+```
+//#[soteria(ignore_signer)]
+//#[soteria(ignore_destination)]
+```
