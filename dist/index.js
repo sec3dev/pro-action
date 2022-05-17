@@ -16334,15 +16334,15 @@ const FormData = __nccwpck_require__(6054);
 const fs = __nccwpck_require__(7147);
 
 const apiVersion = 'v1';
-const apiUrl = 'https://pilot.soteria.dev/api';
+const apiUrl = 'https://pro.soteria.dev/api';
 const saveFilename = 'soteria-report.sarif';
 
 async function run() {
     try {
-      const password = core.getInput('soteria-token', {required: true});
+      const token = core.getInput('soteria-token', {required: true});
       const path = core.getInput('path', {required: false}) || "";
-      const commit = github.context.sha;
-      const repoName = github.context.payload.repository? github.context.payload.repository.name : "Unknown Repo";
+      const commit = github.context.sha || '';
+      const repoName = github.context.payload.repository? github.context.payload.repository.name : "";
       // TODO: Better handling of repos without infos.
       const isPrivate = github.context.payload.repository? github.context.payload.repository.private : true;
       const ref = github.context.ref;
@@ -16352,7 +16352,8 @@ async function run() {
         const isTag = refSegments[refSegments.length -2] === 'tags';
         tag = isTag ? refSegments[refSegments.length - 1] : '';
       }
-      const taskName = `${repoName} ${commit}`;
+      const taskName = repoName ? `${repoName} ${commit}` : Date().toLocaleString();
+
 
       fs.mkdirSync(`/tmp/${repoName}/${path}`, { recursive: true })
       execSync(`
@@ -16368,7 +16369,7 @@ async function run() {
       formData.append('taskName', taskName);
       formData.append('isPrivate', isPrivate.toString());
       formData.append('description', '');
-      formData.append('password', password);
+      formData.append('token', token);
       formData.append('commit', commit);
       formData.append('code', fs.createReadStream('/tmp/code.tgz'), 'name');
       const formHeaders = formData.getHeaders();
@@ -16391,10 +16392,14 @@ async function run() {
           core.info(`All tests are passed! A certificate has been issued to you.`);
           core.info(`The report is saved in the workspace as "${saveFilename}"`);
           core.info(`To view and download the report or the certificate on Soteria web app, visit: ${response.data.reportLink}`);
+          core.info(`Credit consumed: ${response.data.price}`)
+          core.info(`Credit balance: ${response.data.credit}`)
         } else {
           core.setFailed(`Total number of warnings: ${response.data.numTotalIssues}`)
           core.info(`The report is saved in the workspace as "${saveFilename}"`);
           core.info(`To view and download the report on Soteria web app, visit: ${response.data.reportLink}`);
+          core.info(`Credit consumed: ${response.data.price}`)
+          core.info(`Credit balance: ${response.data.credit}`)
         }
 
       } else if (response.data.message) {
