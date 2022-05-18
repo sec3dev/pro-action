@@ -1,6 +1,6 @@
 # Soteria Pro security auditing
 
-This Github action conducts security auditing on Solana smart contracts using the Soteria Premium tool.
+This Github action conducts security auditing for Solana smart contracts using the Soteria Premium tool.
 
 Note: The action will send your source code to Soteria's server for analysis. By using this action, you certify that you agree to the [Terms of Use](https://soteria.dev/tos) and the [Privacy Policies](https://soteria.dev/privacy) of Soteria.
 
