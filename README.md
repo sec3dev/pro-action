@@ -2,17 +2,15 @@
 
 This Github action conducts security auditing on Solana smart contracts using the Soteria Premium tool.
 
-Note: The action will send your source code to Soteria's server for analysis. By using this action, you certify that you agree to the [Terms of Use]() and the [Privacy Policies]() of Soteria.
+Note: The action will send your source code to Soteria's server for analysis. By using this action, you certify that you agree to the [Terms of Use](https://soteria.dev/tos) and the [Privacy Policies](https://soteria.dev/privacy) of Soteria.
 
 ## Input
 
-### `soteria-token`
+### `Soteria Secret Token`
 
-**Required.** The token provided by Soteria.
+**Required.** The token provided by Soteria to users with Build/Scale/Enterprise Plans.
 
-For those who have previously used the Soteria web app, the token is the same as the invitation code.
-
-If you wish to get a token to use Soteria Pro, please email [contact@soteria.dev](contact@soteria.dev).
+The token can be found on the dashboard under the "Account" tab.
 
 After acquiring the token, navigate to your repository, click Settings -> Secrets -> Actions -> New Repository Secret, Name the token as `SOTERIA_TOKEN` in the `Name` field, paste the token in the `Value` field and click `Add secret`. The token is now accessible in the workflow as `${{ secrets.SOTERIA_TOKEN }}`
 
@@ -50,7 +48,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Soteria Pro Audit
         continue-on-error: false    # set to true if you don't want to fail jobs
-        uses: soteria-bc/pro-action-pilot@v1
+        uses: soteria-bc/pro-action@v1
         with:
           soteria-token: ${{ secrets.SOTERIA_TOKEN }}
           path: programs/your_program
@@ -74,7 +72,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Soteria Pro Audit
         continue-on-error: true    # set to true if you don't want to fail jobs
-        uses: soteria-bc/pro-action-pilot@v1
+        uses: soteria-bc/pro-action@v1
         with:
           soteria-token: ${{ secrets.SOTERIA_TOKEN }}
           path: programs/your_program
