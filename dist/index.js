@@ -16340,6 +16340,7 @@ const saveFilename = 'soteria-report.sarif';
 async function run() {
     try {
       const token = core.getInput('soteria-token', {required: true});
+      const path = core.getInput('path', {required: false}) || "";
       const commit = github.context.sha;
       const repoOwner = github.context.repo.owner;
       const repoName = github.context.repo.repo;
