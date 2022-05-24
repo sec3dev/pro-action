@@ -2,7 +2,7 @@
 
 This Github action conducts security auditing for Solana smart contracts using the Sec3 Premium (formerly Soteria) tool.
 
-Note: The action will send your source code to Sec3's server for analysis. By using this action, you certify that you agree to the [Terms of Use](https://sec3.dev/terms) and the [Privacy Policies](https://sec3.dev/privacy-policy) of Soteria.
+Note: The action will send your source code to Sec3's server for analysis. By using this action, you certify that you agree to the [Terms of Use](https://sec3.dev/terms) and the [Privacy Policies](https://sec3.dev/privacy-policy) of Sec3.
 
 ## Input
 

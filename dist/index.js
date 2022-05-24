@@ -16334,12 +16334,12 @@ const FormData = __nccwpck_require__(6054);
 const fs = __nccwpck_require__(7147);
 
 const apiVersion = 'v1';
-const apiUrl = 'https://pro.soteria.dev/api';
-const saveFilename = 'soteria-report.sarif';
+const apiUrl = 'https://pro.sec3.dev/api';
+const saveFilename = 'sec3-report.sarif';
 
 async function run() {
     try {
-      const token = core.getInput('soteria-token', {required: true});
+      const token = core.getInput('sec3-token', {required: true});
       const path = core.getInput('path', {required: false}) || "";
       const commit = github.context.sha;
       const repoOwner = github.context.repo.owner;
