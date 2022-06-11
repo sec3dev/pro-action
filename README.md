@@ -20,7 +20,10 @@ Warning: **DO NOT** explicitly include your token in the workflow.
 
 **Optional.** The path to the program to be tested.
 
+`path: programs/your_program`
+
 If omitted, the test will run against all the programs in the repository.
+
 
 ## Output
 
@@ -53,6 +56,8 @@ jobs:
           sec3-token: ${{ secrets.SEC3_TOKEN }}
           path: programs/your_program
 ```
+A sample action is available at https://github.com/sec3dev/ci-test/blob/main/.github/workflows/sec3.yml
+
 ## Code scanning alerts integration
 To integration with [Code scanning alerts in Github](https://docs.github.com/en/enterprise-server@3.4/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/setting-up-code-scanning-for-a-repository), create an Action as follows:
 ```
@@ -81,6 +86,8 @@ jobs:
         with:
           sarif_file: sec3-report.sarif
 ```
+A sample action with alerts is available at https://github.com/sec3dev/ci-test/blob/main/.github/workflows/sec3-alerts.yml
+
 ## Managing false positives
 The tool may identify potential issues that you accept as they are to e.g. save compute cycles, or genuine false positives. Ignores can be configured by adding the below annotation to the line above the line you are wanting to ignore:
 ```
