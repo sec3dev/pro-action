@@ -5,7 +5,7 @@ inputs:
     description: "Configure the job to run tests against a specific program"
     required: false
     default: "."
-  soteria-token:
+  sec3-token:
     description: 'The token (same as the invitation code) that Soteria has provided to the user'
     required: true
 runs:
