@@ -16391,13 +16391,13 @@ async function run() {
         if (response.data.numTotalIssues === 0) {
           core.info(`All tests are passed! A certificate has been issued to you.`);
           core.info(`The report is saved in the workspace as "${saveFilename}"`);
-          core.info(`To view and download the report or the certificate on Soteria web app, visit: ${response.data.reportLink}`);
+          core.info(`To view and download the report or the Sec3 certificate, visit: ${response.data.reportLink}`);
           core.info(`Credit consumed: ${response.data.price}`)
           core.info(`Credit balance: ${response.data.credit}`)
         } else {
           core.setFailed(`Total number of warnings: ${response.data.numTotalIssues}`)
           core.info(`The report is saved in the workspace as "${saveFilename}"`);
-          core.info(`To view and download the report on Soteria web app, visit: ${response.data.reportLink}`);
+          core.info(`To view and download the report on Sec3, visit: ${response.data.reportLink}`);
           core.info(`Credit consumed: ${response.data.price}`)
           core.info(`Credit balance: ${response.data.credit}`)
         }
