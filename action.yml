@@ -1,12 +1,12 @@
-name: 'Soteria Pro'
-description: 'This action conducts security auditing on Solana smart contracts using Soteria Premium tool.'
+name: 'Sec3 Pro'
+description: 'This action conducts security auditing on Solana smart contracts using Sec3 Premium tool.'
 inputs:
   path:
     description: "Configure the job to run tests against a specific program"
     required: false
     default: "."
   sec3-token:
-    description: 'The token (same as the invitation code) that Soteria has provided to the user'
+    description: 'The Sec3 Secret Token that Sec3 has provided to the user'
     required: true
 runs:
   using: 'node16'
