@@ -16390,7 +16390,7 @@ async function run() {
         });
 
         core.info('Analysis completed!');
-        const reportLink = hideReportLink ? `${appUrl}/task` : response.data.reportLink;
+        const reportLink = hideReportLink ? `${appUrl}/home` : response.data.reportLink;
         if (response.data.numTotalIssues === 0) {
           core.setOutput("has-error", false);
           core.info(`All tests are passed! A certificate has been issued to you.`);
