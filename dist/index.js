@@ -16335,12 +16335,14 @@ const fs = __nccwpck_require__(7147);
 
 const apiVersion = 'v1';
 const apiUrl = 'https://pro.sec3.dev/api';
+const appUrl = 'https://pro.sec3.dev';
 const saveFilename = 'sec3-report.sarif';
 
 async function run() {
     try {
       const token = core.getInput('sec3-token', {required: true});
       const path = core.getInput('path', {required: false}) || "";
+      const hideReportLink = core.getInput('hide-report-link', {required: false}) || false;
       const commit = github.context.sha;
       const repoOwner = github.context.repo.owner;
       const repoName = github.context.repo.repo;
@@ -16388,21 +16390,20 @@ async function run() {
         });
 
         core.info('Analysis completed!');
+        const reportLink = hideReportLink ? `${appUrl}/task` : response.data.reportLink;
         if (response.data.numTotalIssues === 0) {
           core.setOutput("has-error", false);
           core.info(`All tests are passed! A certificate has been issued to you.`);
           core.info(`The report is saved in the workspace as "${saveFilename}"`);
-          core.info(`To view and download the report or the certificate on Soteria web app, visit: ${response.data.reportLink}`);
-          core.info(`Credit consumed: ${response.data.price}`);
-          core.info(`Credit balance: ${response.data.credit}`);
+          core.info(`To view and download the report or the Sec3 certificate, visit: ${reportLink}`);
         } else {
           core.setOutput("has-error", true);
           core.setFailed(`Total number of warnings: ${response.data.numTotalIssues}`);
           core.info(`The report is saved in the workspace as "${saveFilename}"`);
-          core.info(`To view and download the report on Soteria web app, visit: ${response.data.reportLink}`);
-          core.info(`Credit consumed: ${response.data.price}`);
-          core.info(`Credit balance: ${response.data.credit}`);
+          core.info(`To view and download the report on Sec3, visit: ${reportLink}`);
         }
+        core.info(`Credit consumed: ${response.data.price}`)
+        core.info(`Credit balance: ${response.data.credit}`)
 
       } else if (response.data.message) {
         core.setFailed('Failed to get report: ' + response.data.message);

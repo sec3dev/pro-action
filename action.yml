@@ -1,13 +1,17 @@
 name: 'Sec3 Pro'
-description: 'This action conducts security auditing on Solana smart contracts using Sec3 Pro tool.'
+description: 'This action conducts security auditing on Solana smart contracts using Sec3 Premium tool.'
 inputs:
   path:
     description: "Configure the job to run tests against a specific program"
     required: false
     default: "."
   sec3-token:
-    description: 'The token (same as the invitation code) that Sec3 has provided to the user'
+    description: 'The Sec3 Secret Token that Sec3 has provided to the user'
     required: true
+  hide-report-link:
+    description: 'Whether to hide the report link in the output'
+    required: false
+    default: false
 outputs:
   has-error:
     description: 'Whether Sec3 detects errors in the codebase.'

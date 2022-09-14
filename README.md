@@ -103,6 +103,15 @@ Ignore missing unsafe transfer destination check only:
 ```
 //#[soteria(ignore_destination)]
 ```
+Ignore untrustful account check only:
+```
+//#[soteria(ignore_untrustful)]
+```
+Ignore redundant code check only:
+```
+//#[soteria(ignore_redundant)]
+```
+
 These annotations can also be combined:
 ```
 //#[soteria(ignore_signer,ignore_destination)]
