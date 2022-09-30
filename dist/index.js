@@ -16382,7 +16382,8 @@ async function run() {
         validateStatus: function() {return true},
       });
       if (response.data.data.payload) {
-        fs.writeFileSync(saveFilename, JSON.stringify(response.data.data.payload.report), function (err) {
+        const {report, rawReportLink, numTotalIssues, price, credit, isFreePlan} = response.data.data.payload;
+        fs.writeFileSync(saveFilename, JSON.stringify(report), function (err) {
           if (err) {
             core.setFailed(err.message);
             throw error;
@@ -16390,20 +16391,33 @@ async function run() {
         });
 
         core.info('Analysis completed!');
-        const reportLink = hideReportLink ? `${appUrl}` : response.data.data.payload.reportLink;
-        if (response.data.data.payload.numTotalIssues === 0) {
+        const reportLink = hideReportLink ? `${appUrl}` : rawReportLink;
+        if (numTotalIssues === 0) {
           core.setOutput("has-error", false);
-          core.info(`All tests are passed! A certificate has been issued to you.`);
-          core.info(`The report is saved in the workspace as "${saveFilename}"`);
-          core.info(`To view and download the report or the Sec3 certificate, visit: ${reportLink}`);
+          if (isFreePlan) {
+            core.info(`All tests are passed!`);
+            core.info(`The report is saved in the workspace as "${saveFilename}"`);
+            core.info(`To view and download the report, visit: ${reportLink}`);
+          } else {
+            core.info(`All tests are passed! A certificate has been issued to you.`);
+            core.info(`The report is saved in the workspace as "${saveFilename}"`);
+            core.info(`To view and download the report or the Sec3 certificate, visit: ${reportLink}`);
+          }
         } else {
           core.setOutput("has-error", true);
-          core.setFailed(`Total number of warnings: ${response.data.data.payload.numTotalIssues}`);
-          core.info(`The report is saved in the workspace as "${saveFilename}"`);
-          core.info(`To view and download the report on Sec3, visit: ${reportLink}`);
+          if (isFreePlan) {
+            core.setFailed(`Total number of warnings: ${numTotalIssues}`);
+            core.info(`The report is saved in the workspace as "${saveFilename}"`);
+            core.info(`To view and download the report on Sec3, visit: ${reportLink}`);
+            core.info(`Notice: the report is generated under Free plan, which covers a subset of the vulnerabilities. Visit ${appUrl}/account#plan for more options.`);
+          } else {
+            core.setFailed(`Total number of warnings: ${numTotalIssues}`);
+            core.info(`The report is saved in the workspace as "${saveFilename}"`);
+            core.info(`To view and download the report on Sec3, visit: ${reportLink}`);
+          }
         }
-        core.info(`Credit consumed: ${response.data.data.payload.price}`)
-        core.info(`Credit balance: ${response.data.data.payload.credit}`)
+        core.info(`Credit consumed: ${price}`)
+        core.info(`Credit balance: ${credit}`)
 
       } else if (response.data.message) {
         core.setFailed('Failed to get report: ' + response.data.message);
