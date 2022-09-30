@@ -16381,8 +16381,8 @@ async function run() {
         headers: {...formHeaders},
         validateStatus: function() {return true},
       });
-      if (response.data.report) {
-        fs.writeFileSync(saveFilename, JSON.stringify(response.data.report), function (err) {
+      if (response.data.data.payload) {
+        fs.writeFileSync(saveFilename, JSON.stringify(response.data.data.payload.report), function (err) {
           if (err) {
             core.setFailed(err.message);
             throw error;
@@ -16390,20 +16390,20 @@ async function run() {
         });
 
         core.info('Analysis completed!');
-        const reportLink = hideReportLink ? `${appUrl}/home` : response.data.reportLink;
-        if (response.data.numTotalIssues === 0) {
+        const reportLink = hideReportLink ? `${appUrl}/home` : response.data.data.payload.reportLink;
+        if (response.data.data.payload.numTotalIssues === 0) {
           core.setOutput("has-error", false);
           core.info(`All tests are passed! A certificate has been issued to you.`);
           core.info(`The report is saved in the workspace as "${saveFilename}"`);
           core.info(`To view and download the report or the Sec3 certificate, visit: ${reportLink}`);
         } else {
           core.setOutput("has-error", true);
-          core.setFailed(`Total number of warnings: ${response.data.numTotalIssues}`);
+          core.setFailed(`Total number of warnings: ${response.data.data.payload.numTotalIssues}`);
           core.info(`The report is saved in the workspace as "${saveFilename}"`);
           core.info(`To view and download the report on Sec3, visit: ${reportLink}`);
         }
-        core.info(`Credit consumed: ${response.data.price}`)
-        core.info(`Credit balance: ${response.data.credit}`)
+        core.info(`Credit consumed: ${response.data.data.payload.price}`)
+        core.info(`Credit balance: ${response.data.data.payload.credit}`)
 
       } else if (response.data.message) {
         core.setFailed('Failed to get report: ' + response.data.message);
