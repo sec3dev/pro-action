@@ -16342,7 +16342,7 @@ async function run() {
     try {
       const token = core.getInput('sec3-token', {required: true});
       const path = core.getInput('path', {required: false}) || "";
-      const hideReportLink = core.getInput('hide-report-link', {required: false}) || false;
+      const hideReportLink = core.getBooleanInput('hide-report-link', {required: false});
       const commit = github.context.sha;
       const repoOwner = github.context.repo.owner;
       const repoName = github.context.repo.repo;
