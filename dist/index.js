@@ -16382,7 +16382,7 @@ async function run() {
         validateStatus: function() {return true},
       });
       if (response.data.data.payload) {
-        const {report, rawReportLink, numTotalIssues, price, credit, isFreePlan} = response.data.data.payload;
+        const {report, rawReportLink, numTotalIssues, price, credit, plan} = response.data.data.payload;
         fs.writeFileSync(saveFilename, JSON.stringify(report), function (err) {
           if (err) {
             core.setFailed(err.message);
@@ -16392,9 +16392,10 @@ async function run() {
 
         core.info('Analysis completed!');
         const reportLink = hideReportLink ? `${appUrl}` : rawReportLink;
+        const isFreeOrBasicPlan = plan === "Free" || plan === "Basic";
         if (numTotalIssues === 0) {
           core.setOutput("has-error", false);
-          if (isFreePlan) {
+          if (isFreeOrBasicPlan) {
             core.info(`All tests are passed!`);
             core.info(`The report is saved in the workspace as "${saveFilename}"`);
             core.info(`To view and download the report, visit: ${reportLink}`);
@@ -16405,11 +16406,11 @@ async function run() {
           }
         } else {
           core.setOutput("has-error", true);
-          if (isFreePlan) {
+          if (isFreeOrBasicPlan) {
             core.setFailed(`Total number of warnings: ${numTotalIssues}`);
             core.info(`The report is saved in the workspace as "${saveFilename}"`);
             core.info(`To view and download the report on Sec3, visit: ${reportLink}`);
-            core.info(`Notice: the report is generated under Free plan, which covers a subset of the vulnerabilities. Visit ${appUrl}/account#plan for more options.`);
+            core.info(`Notice: the report is generated under Free or Basic plan, which covers a subset of the vulnerabilities. Visit ${appUrl}/account#plan for more options.`);
           } else {
             core.setFailed(`Total number of warnings: ${numTotalIssues}`);
             core.info(`The report is saved in the workspace as "${saveFilename}"`);
