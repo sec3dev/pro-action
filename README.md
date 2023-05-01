@@ -82,7 +82,7 @@ jobs:
           sec3-token: ${{ secrets.SEC3_TOKEN }}
           path: programs/your_program
       - name: Upload Sarif Report
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: sec3-report.sarif
 ```
