@@ -16384,7 +16384,7 @@ async function run() {
         headers: {...formHeaders},
         validateStatus: function() {return true},
       });
-      if (response.data.data.payload) {
+      if (response?.data?.data?.payload) {
         const {report, rawReportLink, numTotalIssues, price, credit, plan} = response.data.data.payload;
         fs.writeFileSync(saveFilename, JSON.stringify(report), function (err) {
           if (err) {
@@ -16423,7 +16423,7 @@ async function run() {
         core.info(`Credit consumed: ${price}`)
         core.info(`Credit balance: ${credit}`)
 
-      } else if (response.data.message) {
+      } else if (response?.data?.message) {
         core.setFailed('Failed to get report: ' + response.data.message);
       } else {
         core.setFailed('Failed to get report.');
