@@ -16358,16 +16358,13 @@ async function run() {
       const taskName = `${repoOwner} ${repoName} ${commit}`;
 
       fs.mkdirSync(`/tmp/${repoName}/${path}`, { recursive: true })
-      const stdout = execSync(`
+      execSync(`
         CODE_DIR=$(pwd)
         cp -r "\${CODE_DIR}/${path}/"* /tmp/${repoName}/${path}
         cd /tmp
         tar -czf code.tgz ${repoName}
       `)
-      if stdout.includes("No such file or directory") {
-        core.setFailed(stdout);
-        return;
-      }
+      
       const formData = new FormData();
       formData.append('repoName', repoName);
       formData.append('tag', tag);
